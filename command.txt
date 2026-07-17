@@ -1,0 +1,20 @@
+# 1. Instal·lar les dependències mínimes per compilar Python amb la llibreria dinàmica
+sudo apt update && sudo apt install -y libssl-dev zlib1g-dev libtk8.6 tk8.6-dev
+
+# 2. Baixar i instal·lar una versió nàstia de Python amb --enable-shared a la teva carpeta local
+wget https://www.python.org/ftp/python/3.12.1/Python-3.12.1.tar.xz
+tar -xf Python-3.12.1.tar.xz
+cd Python-3.12.1
+
+./configure --enable-shared --prefix=$HOME/local_python
+make -j$(nproc)
+make install
+
+# 3. Configurar les rutes per al teu nou Python
+export PATH=$HOME/local_python/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/local_python/lib:$LD_LIBRARY_PATH
+
+# 4. Tornar a la teva carpeta del projecte, instal·lar PyInstaller i compilar
+cd /workspaces/arrelos/apps
+pip3 install pyinstaller
+pyinstaller --onefile --add-data "../icones/ArrelWifi.png:." Wifi_Manager.py
